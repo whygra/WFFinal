@@ -1,0 +1,7 @@
+D:\Codes\HW\WF\Грабовский Ярослав WF Final\Грабовский Ярослав\WFFinal\obj\Debug\net6.0-windows\WFFinal.csproj.AssemblyReference.cache
+D:\Codes\HW\WF\Грабовский Ярослав WF Final\Грабовский Ярослав\WFFinal\obj\Debug\net6.0-windows\WFFinal.Properties.Resources.resources
+D:\Codes\HW\WF\Грабовский Ярослав WF Final\Грабовский Ярослав\WFFinal\obj\Debug\net6.0-windows\WFFinal.csproj.GenerateResource.cache
+D:\Codes\HW\WF\Грабовский Ярослав WF Final\Грабовский Ярослав\WFFinal\obj\Debug\net6.0-windows\WFFinal.GeneratedMSBuildEditorConfig.editorconfig
+D:\Codes\HW\WF\Грабовский Ярослав WF Final\Грабовский Ярослав\WFFinal\obj\Debug\net6.0-windows\WFFinal.AssemblyInfoInputs.cache
+D:\Codes\HW\WF\Грабовский Ярослав WF Final\Грабовский Ярослав\WFFinal\obj\Debug\net6.0-windows\WFFinal.AssemblyInfo.cs
+D:\Codes\HW\WF\Грабовский Ярослав WF Final\Грабовский Ярослав\WFFinal\obj\Debug\net6.0-windows\WFFinal.csproj.CoreCompileInputs.cache
