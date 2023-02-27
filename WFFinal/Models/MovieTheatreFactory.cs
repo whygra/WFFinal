@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Drawing.Printing;
 using System.Linq;
@@ -29,36 +30,39 @@ namespace WFFinal.Models
         public static readonly (DateTime From, DateTime To) SchedulePeriod = 
             (new(2023, 3, 1), new(2023, 4, 1));
 
-        // создать словарь из n случайных фильмов с расписанием сеансов
-        public static Dictionary<Movie, List<DateTime>> GetMovieSessions(int nMovies = 8)
+        // создать список сеансов для фильмов
+        public static List<List<DateTime>> GetMovieSessions(List<Movie> movies)
         {
-            Dictionary<Movie, List<DateTime>> result = new();
-            var movies = MovieFactory.GetRange(nMovies);
+            List<List<DateTime>> sessions = Enumerable.Repeat(new List<DateTime>(), movies.Count).ToList();
 
             // заполнение расписания
             var time = WorkingHours.From;
             for (DateTime date = SchedulePeriod.From; date < SchedulePeriod.To; )
             {
                 // случайный фильм из списка
-                var movie = Utils.SelectRand(movies);
+                int index = Utils.GetRand(0, movies.Count);
                 // в список сеансов выбранного фильма добавляется время
-                result[movie].Add(date + time);
+                sessions[index].Add(date + time);
                 // время увеличивается на продолжительность фильма
-                time.Add(new(0, movie.Duration, 0));
+                time += new TimeSpan(0, movies[index].Duration, 0);
                 // если время за пределами часов работы,
                 // переносимся на начало следующего дня
                 if (time > WorkingHours.To || time < WorkingHours.From)
                 {
-                    date.AddDays(1);
+                    date = date.AddDays(1);
                     time = WorkingHours.From;
                 }
             }
-            return result;
+            return sessions;
         }
 
         // возвращает объект со случайными значениями атрибутов
-        public static MovieTheatre Get() =>
-            new(Utils.SelectRand(Names), GetMovieSessions(), Utils.GetRand(10, 31));
+        public static MovieTheatre Get()
+        {
+            var movies = MovieFactory.GetRange(7);
+            var sessions = GetMovieSessions(movies);
+            return new(Utils.SelectRand(Names), movies, sessions, Utils.GetRand(10, 31));
+        }
 
         // коллекция кинотеатров
         public static List<MovieTheatre> GetRange(int n)

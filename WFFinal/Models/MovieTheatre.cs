@@ -9,20 +9,23 @@ namespace WFFinal.Models
     public class MovieTheatre
     {
         public MovieTheatre
-            (string name, Dictionary<Movie, List<DateTime>> movieSessions, int numOfSeats)
+            (string name, List<Movie> movies, List<List<DateTime>> movieSessions, int numOfSeats)
         {
             Name = name;
             MovieSessions = movieSessions;
+            Movies = movies;
             NumOfSeats = numOfSeats;
         }
 
-        public MovieTheatre() : this("Не указано", new(), 10) { }
+        public MovieTheatre() : this("Не указано", new(), new(), 10) { }
 
         // название
         public string Name { get; set; }
 
         // коллекция времен начала сеансов для каждого фильма
-        public Dictionary<Movie, List<DateTime>> MovieSessions;
+        public List<List<DateTime>> MovieSessions;
+
+        public List<Movie> Movies { get; set; }
 
         // количество мест в зрительном зале(не более 30)
         int _numOfSeats;

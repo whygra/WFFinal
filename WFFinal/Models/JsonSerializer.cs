@@ -12,10 +12,7 @@ namespace WFFinal.Models
         // чтение
         public T Load(string path)
         {
-            if (!File.Exists(path))
-                throw new FileNotFoundException("Файл не найден", path);
             string json = File.ReadAllText(path);
-
             return JsonConvert.DeserializeObject<T>(json);
         }
 
@@ -23,9 +20,7 @@ namespace WFFinal.Models
         // запись
         public void Save(T data, string path)
         {
-            if (!File.Exists(path))
-                File.Create(path).Close();
-            string json = JsonConvert.SerializeObject(data);
+            string json = JsonConvert.SerializeObject(data, Formatting.Indented);
             File.WriteAllText(path, json);
         }
     }
