@@ -34,8 +34,6 @@ namespace WFFinal.Controllers
         { }
 
         #region геттеры и сеттеры для представления
-        // свойство для чтения коллекции
-        public List<MovieTheatre> Theatres => FilmDistributor.MovieTheatres;
 
         // свойства для чтения данных компании
         public string Name => FilmDistributor.Name;
@@ -51,7 +49,7 @@ namespace WFFinal.Controllers
 
         #region работа с файлом
         // инициализация - открытие/создание(+заполнение) файла по-умолчанию
-        public void Init(bool fill = false)
+        public void Initialize(bool fill = false)
         {
             if (File.Exists(Utils.TempFilePath))
             {
@@ -93,8 +91,7 @@ namespace WFFinal.Controllers
         #endregion
 
 
-        #region операции с коллекцией
-
+        #region операции над коллекцией
 
         // заполнение коллекции кинотеатров
         public void Fill(int n)
@@ -103,16 +100,6 @@ namespace WFFinal.Controllers
 
             FilmDistributor.MovieTheatres.AddRange(MovieTheatreFactory.GetRange(n));
         }
-        #endregion
-
-        #region получение отсортированной коллекции
-        // компараторы сортировки:
-
-        // вернуть отсортированный список
-
-        #endregion
-
-        #region выборка
         #endregion
     }
 }
