@@ -10,7 +10,7 @@ namespace WFFinal.Infrastructure
     public static class Utils
     {
         public static string DataPath = "App_Data/";
-        public static string TempFilePath = DataPath + "routes.json";
+        public static string TempFilePath = DataPath + "film_distributor.json";
 
         // генерация случайных чисел
         static Random Random = new Random();

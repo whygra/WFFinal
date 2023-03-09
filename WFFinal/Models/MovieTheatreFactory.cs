@@ -31,20 +31,22 @@ namespace WFFinal.Models
             (new(2023, 3, 1), new(2023, 4, 1));
 
         // создать список сеансов для фильмов
-        public static List<List<DateTime>> GetMovieSessions(List<Movie> movies)
+        public static Dictionary<int, List<DateTime>> GetMovieSessions(List<Movie> movies)
         {
-            List<List<DateTime>> sessions = Enumerable.Repeat(new List<DateTime>(), movies.Count).ToList();
+            Dictionary<int, List<DateTime>> sessions = new();
 
             // заполнение расписания
             var time = WorkingHours.From;
-            for (DateTime date = SchedulePeriod.From; date < SchedulePeriod.To; )
+            for (DateTime date = SchedulePeriod.From; date < SchedulePeriod.To;)
             {
                 // случайный фильм из списка
-                int index = Utils.GetRand(0, movies.Count);
+                Movie movie = Utils.SelectRand(movies);
                 // в список сеансов выбранного фильма добавляется время
-                sessions[index].Add(date + time);
+                if (!sessions.ContainsKey(movie.Id))
+                    sessions[movie.Id] = new List<DateTime>();
+                sessions[movie.Id].Add(date + time);
                 // время увеличивается на продолжительность фильма
-                time += new TimeSpan(0, movies[index].Duration, 0);
+                time += new TimeSpan(0, movie.Duration, 0);
                 // если время за пределами часов работы,
                 // переносимся на начало следующего дня
                 if (time > WorkingHours.To || time < WorkingHours.From)

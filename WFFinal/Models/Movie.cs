@@ -8,7 +8,7 @@ namespace WFFinal.Models
 {
     public class Movie
     {
-
+        public int Id { get; set; }
         public Movie(string title, string director, int year, string genre, int ageCategory, int duration)
         {
             Title = title;
@@ -31,7 +31,7 @@ namespace WFFinal.Models
         public int Year {
             get => _year;
             set =>
-                _year = value <= 1900
+                _year = value <= 0
                     ? throw new Exception("недопустимый год ")
                     : value;
         }
@@ -45,7 +45,7 @@ namespace WFFinal.Models
         {
             get => _ageCategory;
             set =>
-                _ageCategory = value <= 0
+                _ageCategory = value < 0
                     ? throw new Exception("недопустимая возрастная категория")
                     : value;
         }
@@ -60,5 +60,8 @@ namespace WFFinal.Models
                     ? throw new Exception("недопустимая длительность ")
                     : value;
         }
+
+        override public string ToString() =>
+            $"\"{Title}\", ({Year}), реж. {Director}";
     }
 }

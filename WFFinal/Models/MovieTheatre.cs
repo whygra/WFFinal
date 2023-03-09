@@ -9,7 +9,7 @@ namespace WFFinal.Models
     public class MovieTheatre
     {
         public MovieTheatre
-            (string name, List<Movie> movies, List<List<DateTime>> movieSessions, int numOfSeats)
+            (string name, List<Movie> movies, Dictionary<int, List<DateTime>> movieSessions, int numOfSeats)
         {
             Name = name;
             MovieSessions = movieSessions;
@@ -23,7 +23,8 @@ namespace WFFinal.Models
         public string Name { get; set; }
 
         // коллекция времен начала сеансов для каждого фильма
-        public List<List<DateTime>> MovieSessions;
+        // ключ - строка с данными о фильме
+        public Dictionary<int, List<DateTime>> MovieSessions { get; set; }
 
         public List<Movie> Movies { get; set; }
 

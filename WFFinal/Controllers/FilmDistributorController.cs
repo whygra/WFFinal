@@ -11,6 +11,10 @@ namespace WFFinal.Controllers
 {
     public class FilmDistributorController
     {
+        // компаратор для сортировки кинотеатров по названию
+        public static Comparer<MovieTheatre> CompareByName =
+            Comparer<MovieTheatre>.Create((mt1, mt2) => mt1.Name.CompareTo(mt2.Name));
+
         // сериализатор
         JsonSerializer<FilmDistributor> _serializer;
         // обрабатываемый объект
@@ -22,9 +26,10 @@ namespace WFFinal.Controllers
         // для добавления нового критерия сортировки достаточно создать новый компаратор
         public Comparer<MovieTheatre> SortComp { get; set; }
 
+
         public FilmDistributorController(FilmDistributor filmDistributor, string filePath)
         {
-            SortComp = null!;
+            SortComp = CompareByName; // сортировка по названию
             FilmDistributor = filmDistributor;
             _serializer = new();
             FilePath = filePath;
@@ -49,27 +54,28 @@ namespace WFFinal.Controllers
 
         #region работа с файлом
         // инициализация - открытие/создание(+заполнение) файла по-умолчанию
-        public void Initialize(bool fill = false)
+        public void New(bool fill = false)
         {
-            if (File.Exists(Utils.TempFilePath))
-            {
-                // загружаем данные из файла
-                Deserialize();
-                return;
-            }
-
-            // если файл отсутствует - создаем и заполняем
-            if (!Directory.Exists(Utils.DataPath))
-                Directory.CreateDirectory(Utils.DataPath);
-            File.Create(Utils.TempFilePath).Close();
-
-            // заполнение и запись коллекции в созданный файл
-            if (fill)
-            {
-                Fill(15);
-                Serialize();
-            }
+            FilePath = Utils.TempFilePath;
+            FilmDistributor = new();
+            if (fill) Fill(5);
         }
+
+        // проверка наличия файла
+        public bool CreateFileIfNotExists()
+        {
+            bool created = false;
+            // если файл отсутствует - создаем
+            if (!Directory.Exists(Utils.DataPath))
+                Directory.GetParent(FilePath).Create();
+            if (!File.Exists(FilePath))
+            {
+                File.Create(FilePath).Close();
+                created = true;
+            }
+            return created;
+        }
+        
 
         // сериализация
         public void Serialize() => _serializer.Save(FilmDistributor, FilePath);
@@ -78,14 +84,11 @@ namespace WFFinal.Controllers
         // десериализация
         public void Deserialize()
         {
-            if (!File.Exists(FilePath))
-                throw new Exception($"Файл {FilePath} не найден");
-
             // загрузка данных
             var loaded = _serializer.Load(FilePath);
-            if (loaded == null)
+            
+             FilmDistributor = loaded != null ? loaded :
                 throw new Exception("Ошибка десериализации");
-            FilmDistributor = loaded;
         }
 
         #endregion
@@ -99,6 +102,16 @@ namespace WFFinal.Controllers
             FilmDistributor.MovieTheatres.Clear();
 
             FilmDistributor.MovieTheatres.AddRange(MovieTheatreFactory.GetRange(n));
+        }
+
+        // сортировка коллекции кинотеатров
+        public void Sort(bool isAsc = true)
+        {
+            FilmDistributor.MovieTheatres.Sort(
+                isAsc ?
+                SortComp :
+                Comparer<MovieTheatre>.Create((mt1, mt2) => SortComp.Compare(mt2, mt1))
+                );
         }
         #endregion
     }

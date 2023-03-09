@@ -61,7 +61,11 @@ namespace WFFinal.Models
         {
             List<Movie> result = new();
             for (int i = 0; i < n; i++)
-                result.Add(Get());
+            {
+                var movie = Get();
+                movie.Id = i;
+                result.Add(movie);
+            }
             return result;
         }
     }
